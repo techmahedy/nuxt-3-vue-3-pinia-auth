@@ -22,11 +22,4 @@ const userStore = useUserStore()
 const { email } = storeToRefs(userStore)
 
 definePageMeta({ middleware: 'is-logged-out' })
-
-onMounted(async () => {
-  try {
-    await userStore.getUser()
-  } catch (error) {
-  }
-})
 </script>
