@@ -20,9 +20,9 @@ export default defineNuxtConfig({
   ],
   pwa: {
     manifest: {
-      name: "Linktree Clone",
-      short_name: "Linktree Clone",
-      description: "This is a Linktree Clone",
+      name: "Test App",
+      short_name: "Test App",
+      description: "Test App",
       theme_color: "#32CD32",
       icons: [
         {
