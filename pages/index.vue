@@ -38,7 +38,8 @@
 
 <script setup>
     import AuthLayout from '~/layouts/AuthLayout.vue';
-
+    import axios from 'axios';
+    
     import {
         useUserStore
     } from '~~/stores/user';
@@ -58,6 +59,10 @@
         errors.value = null
         try {
             await userStore.login(email.value, password.value);
+            const token = window.localStorage.getItem('token');
+            if(token){
+                axios.defaults.headers.common['Authorization'] = 'Bearer ' + userStore.api_token;
+            }
             router.push('/admin')
         } catch (error) {
             errors.value = error.response.data.errors

@@ -4,7 +4,11 @@
             id="TopNav" 
             class="w-full flex items-center justify-between md:pt-2.5 md:px-2.5"
         >
-            <div class="flex items-center justify-between md:rounded-full md:shadow-sm px-2 md:pl-6 pl-4 py-[8px] bg-white w-full border-b">
+            <div class="flex items-center justify-between md:shadow-sm px-2 md:pl-6 pl-4 py-[8px] bg-white w-full border-b">
+                <NuxtLink to="/admin">Home</NuxtLink>&nbsp;
+
+                <NuxtLink to="/admin/profile">Profile</NuxtLink>
+
                 <button
                     @click="logout()"
                     class="w-full flex items-center text-gray-600 text-[15px] p-3 hover:text-black"
