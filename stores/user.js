@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import axios from "~/config/axios";
+import axios from "~/plugins/axios";
 
 const $axios = axios().provide.axios;
 
@@ -8,10 +8,10 @@ export const useUserStore = defineStore('user', {
         id: '',
         full_name: '',
         email: '',
-        api_token: ''
+        api_token: '',
+        isLoggedIn: false,
     }),
     actions: {
-
         async login(email, password) {
             await $axios.post('/api/login', {
               email: email,
@@ -21,6 +21,7 @@ export const useUserStore = defineStore('user', {
                 this.$state.api_token = result.data.data.api_token
                 this.$state.email = result.data.data.email
                 this.$state.id = result.data.data.id
+                this.$state.isLoggedIn = true;
             });
         },
         
@@ -38,6 +39,7 @@ export const useUserStore = defineStore('user', {
             this.$state.id = res.data.data.id
             this.$state.full_name = res.data.data.full_name
             this.$state.email = res.data.data.email      
+            this.$state.isLoggedIn = true
         },
       
         async logout() {
@@ -50,6 +52,7 @@ export const useUserStore = defineStore('user', {
             this.$state.full_name = ''
             this.$state.email = ''
             this.$state.api_token = ''
+            this.$state.isLoggedIn = false
         },
     },
     persist: true,

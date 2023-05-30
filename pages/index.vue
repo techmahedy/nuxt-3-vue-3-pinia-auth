@@ -1,71 +1,51 @@
 <template>
-    <AuthLayout>
-        <div class="mt-10">
-            <h1 class="lg:text-5xl text-3xl text-center font-extrabold">
-                Log in
-            </h1>
-
-            <form class="mt-12" @submit.prevent="login()">
-                <div>
-                    <TextInput placeholder="Email: link@gmail.com" v-model:input="email" inputType="email"
-                        :error="errors && errors.email ? errors.email[0] : ''" />
+    <AdminLayout>
+        <div id="AdminPage" class="flex h-[100vh] pb-4">
+            <div class="max-w-[750px] mx-auto pb-24">
+                <div class="bg-white">
+                    <div class="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
+                        <h2 class="text-2xl font-bold tracking-tight text-gray-900">Customers also purchased</h2>
+                        <div class="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
+                            <div class="group relative" v-for="(product, index) in products" :key="index">
+                                <div
+                                    class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none lg:h-80">
+                                    <img :src="product.photoURL"
+                                        alt="image"
+                                        class="h-full w-full object-cover object-center lg:h-full lg:w-full">
+                                </div>
+                                <div class="mt-4 flex justify-between">
+                                    <div>
+                                        <h3 class="text-sm text-gray-700">
+                                            <a href="#">
+                                                <span aria-hidden="true" class="inset-0"></span>
+                                                {{ product?.name }}
+                                            </a>
+                                        </h3>
+                                    </div>
+                                    <p class="text-sm font-medium text-gray-900">${{ product.price }}</p>
+                                </div>
+                                <button class="bg-gradient-to-r from-cyan-500 to-blue-500 rounded-md px-2 py-1 text-white" @click.prevent="addToCart(product.id)">
+                                  Add to cart
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-
-                <div class="mt-4">
-                    <TextInput placeholder="Password" v-model:input="password" inputType="password"
-                        :error="errors && errors.password ? errors.password[0] : ''" />
-                </div>
-
-                <div class="mt-10">
-                    <button type="submit" class="rounded-full w-full p-3 font-bold" :disabled="(!email || !password)"
-                        :class="(email && password) ?
-                        'bg-[#8228D9] hover:bg-[#6c21b3] text-white' :
-                        'bg-[#EFF0EB] text-[#A7AAA2]'">
-                        Log in
-                    </button>
-                </div>
-            </form>
-
-            <div class="text-[14px] text-center pt-12">
-                Don't have an account?
-                <NuxtLink to="/register" class="text-[#8228D9] underline">
-                    Sign up
-                </NuxtLink>
             </div>
         </div>
-    </AuthLayout>
+    </AdminLayout>
 </template>
 
 <script setup>
-    import AuthLayout from '~/layouts/AuthLayout.vue';
-    import axios from 'axios';
+    import AdminLayout from '~~/layouts/AdminLayout.vue';
+    import { useCartStore } from '~~/stores/cart';
+    import products from '~/product';
+    const cartStore = useCartStore()
     
-    import {
-        useUserStore
-    } from '~~/stores/user';
-    const userStore = useUserStore()
-
-    const router = useRouter()
-
-    definePageMeta({
-        middleware: 'is-logged-in'
-    })
-
-    let email = ref(null)
-    let password = ref(null)
-    let errors = ref(null)
-
-    const login = async () => {
-        errors.value = null
+    const addToCart = async (productID) => {
         try {
-            await userStore.login(email.value, password.value);
-            const token = window.localStorage.getItem('token');
-            if(token){
-                axios.defaults.headers.common['Authorization'] = 'Bearer ' + userStore.api_token;
-            }
-            router.push('/admin')
-        } catch (error) {
-            errors.value = error.response.data.errors
-        }
+          await cartStore.addToCart(productID);
+        } catch (error) {}
     }
+
 </script>
