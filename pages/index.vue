@@ -6,10 +6,10 @@
                     <div class="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
                         <h2 class="text-2xl font-bold tracking-tight text-gray-900">Customers also purchased</h2>
                         <div class="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
-                            <div class="group relative" v-for="(product, index) in products" :key="index">
+                            <div class="group relative" v-for="(product, index) in products.data" :key="index">
                                 <div
                                     class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none lg:h-80">
-                                    <img :src="product.photoURL"
+                                    <img src="https://images.pexels.com/photos/51383/photo-camera-subject-photographer-51383.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
                                         alt="image"
                                         class="h-full w-full object-cover object-center lg:h-full lg:w-full">
                                 </div>
@@ -18,7 +18,7 @@
                                         <h3 class="text-sm text-gray-700">
                                             <a href="#">
                                                 <span aria-hidden="true" class="inset-0"></span>
-                                                {{ product?.name }}
+                                                {{ product?.title }}
                                             </a>
                                         </h3>
                                     </div>
@@ -39,13 +39,23 @@
 <script setup>
     import AdminLayout from '~~/layouts/AdminLayout.vue';
     import { useCartStore } from '~~/stores/cart';
-    import products from '~/product';
+    import { useProductStore } from '~~/stores/product';
+    import { storeToRefs } from 'pinia';
     const cartStore = useCartStore()
-    
+    const productStore = useProductStore()
+    const { products } = storeToRefs(productStore)
+
     const addToCart = async (productID) => {
         try {
           await cartStore.addToCart(productID);
         } catch (error) {}
     }
 
+    onMounted(async () => {
+        try {
+            await productStore.getProduct()
+        } catch (error) {
+            console.log(error)
+        }
+    })
 </script>

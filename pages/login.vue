@@ -43,11 +43,10 @@
 
 <script setup>
     import axios from 'axios';
-    import {
-        useUserStore
-    } from '~~/stores/user';
-    const userStore = useUserStore()
+    import { useUserStore } from '~~/stores/user';
     import AdminLayout from '~/layouts/AdminLayout.vue';
+
+    const userStore = useUserStore()
     const router = useRouter()
 
     definePageMeta({

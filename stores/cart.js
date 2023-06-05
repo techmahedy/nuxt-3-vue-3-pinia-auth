@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import products from "~/product";
+import { useProductStore as productStore} from "./product";
 
 export const useCartStore = defineStore('cart', {
     state: () => ({
@@ -12,17 +12,17 @@ export const useCartStore = defineStore('cart', {
       
               return {
                 id: product.productID,
-                image: products.find((p) => p.id === product.productID).photoURL,
-                name: products.find((p) => p.id === product.productID).name,
-                price: products.find((p) => p.id === product.productID).price,
+                image: productStore().products.data.find((p) => p.id === product.productID).image,
+                name: productStore().products.data.find((p) => p.id === product.productID).title,
+                price: productStore().products.data.find((p) => p.id === product.productID).price,
                 quantity: product.quantity,
-                cost: product.quantity * products.find((p) => p.id === product.productID).price,
+                cost: product.quantity * productStore().products.data.find((p) => p.id === product.productID).price,
               };
             });
         },
         totalCartPrice() {
             return Object.keys(this.$state.cartContent).reduce((acc, id) => {
-              const product = products.find((p) => p.id === id);
+              const product = productStore().products.data.find((p) => p.id == id);
               if (product) {
                 return acc + product.price * this.$state.cartContent[id].quantity;
               }

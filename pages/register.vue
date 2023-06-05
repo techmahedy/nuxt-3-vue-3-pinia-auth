@@ -56,12 +56,10 @@
 </template>
 
 <script setup>
-    import {
-        useUserStore
-    } from '~~/stores/user';
-    const userStore = useUserStore()
+    import { useUserStore } from '~~/stores/user';
     import AdminLayout from '~/layouts/AdminLayout.vue';
     const router = useRouter()
+    const userStore = useUserStore()
 
     definePageMeta({
         middleware: 'is-logged-in'

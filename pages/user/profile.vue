@@ -34,18 +34,12 @@
 
 <script setup>
     import AdminLayout from '~~/layouts/AdminLayout.vue';
-    import {
-        useUserStore
-    } from '~~/stores/user'
-    import {
-        storeToRefs
-    } from 'pinia';
+    import { useUserStore } from '~~/stores/user'
+    import { storeToRefs } from 'pinia';
     const router = useRouter()
     const userStore = useUserStore()
 
-    const {
-        email
-    } = storeToRefs(userStore)
+    const { email} = storeToRefs(userStore)
 
     definePageMeta({
         middleware: 'is-logged-out'
